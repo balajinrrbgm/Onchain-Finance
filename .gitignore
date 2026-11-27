@@ -1,0 +1,18 @@
+# Node
+node_modules/
+.npm
+
+# Build
+backend/dist/
+frontend/dist/
+
+# Env
+backend/.env
+frontend/.env
+
+# Prisma
+backend/prisma/dev.db*
+backend/prisma/test.db*
+
+# Logs
+*.log

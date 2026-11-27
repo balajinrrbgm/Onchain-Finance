@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String   @id @default(cuid())
+  name            String
+  phone           String   @unique
+  email           String?  @unique
+  role            String   @default("BORROWER")
+  country         String
+  hederaAccountId String?
+  kycStatus       String   @default("PENDING")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  assets          Asset[]
+  loans           Loan[]   @relation("UserLoans")
+  remittances     Remittance[] @relation("SenderRemittances")
+}
+
+model Asset {
+  id                String          @id @default(cuid())
+  owner             User            @relation(fields: [ownerId], references: [id])
+  ownerId           String
+  name              String
+  category          String
+  location          String
+  fractionalGoal    Int
+  valuationUsd      Float
+  complianceUrl     String?
+  surveyorReportUrl String?
+  status            String          @default("PENDING")
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  tokenization      FractionalToken?
+  loans             Loan[]
+}
+
+model FractionalToken {
+  id               String     @id @default(cuid())
+  asset            Asset      @relation(fields: [assetId], references: [id])
+  assetId          String     @unique
+  hederaTokenId    String
+  totalShares      Int
+  pricePerShareUsd Float
+  treasuryAccount  String
+  createdAt        DateTime   @default(now())
+}
+
+model Loan {
+  id             String   @id @default(cuid())
+  borrower       User     @relation("UserLoans", fields: [borrowerId], references: [id])
+  borrowerId     String
+  asset          Asset?   @relation(fields: [assetId], references: [id])
+  assetId        String?
+  amountUsd      Float
+  interestApr    Float
+  termMonths     Int
+  status         String   @default("PENDING")
+  repaymentCycle String   @default("MONTHLY")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Remittance {
+  id                  String   @id @default(cuid())
+  sender              User     @relation("SenderRemittances", fields: [senderId], references: [id])
+  senderId            String
+  receiverPhone       String
+  amount              Float
+  currency            String
+  hedraTransactionId  String?
+  mobileMoneyProvider String?
+  status              String   @default("PENDING")
+  createdAt           DateTime @default(now())
+}

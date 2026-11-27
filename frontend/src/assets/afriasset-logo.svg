@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">AfriAsset Logo</title>
+  <desc id="desc">Stylized A forming a bridge over inclusive finance horizon</desc>
+  <!-- Background shield / circle hint -->
+  <circle cx="40" cy="30" r="28" fill="#0F766E" opacity="0.12" />
+  <!-- Stylized A with African continent negative space suggestion -->
+  <path d="M40 12 L22 48 H30 L35.2 37.2 H44.8 L50 48 H58 L40 12 Z M38.2 30.4 L40 26.4 L41.8 30.4 H38.2 Z" fill="#0F766E" />
+  <!-- Horizon arc indicating upward growth -->
+  <path d="M18 44 C24 34 32 28 40 28 C48 28 56 34 62 44" stroke="#FDBA74" stroke-width="3" stroke-linecap="round" />
+  <!-- Wordmark -->
+  <text x="90" y="38" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="30" font-weight="600" fill="#0F172A">Afri
+    <tspan fill="#0F766E">Asset</tspan>
+  </text>
+</svg>

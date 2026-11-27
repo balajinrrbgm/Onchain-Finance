@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ../backend
+    container_name: afriasset-backend
+    environment:
+      PORT: 4000
+      NODE_ENV: production
+      DATABASE_URL: file:/data/dev.db
+      HEDERA_ACCOUNT_ID: ${HEDERA_ACCOUNT_ID:-}
+      HEDERA_PRIVATE_KEY: ${HEDERA_PRIVATE_KEY:-}
+      STABLECOIN_TREASURY_ACCOUNT_ID: ${STABLECOIN_TREASURY_ACCOUNT_ID:-}
+      HEDERA_MIRROR_NODE_URL: ${HEDERA_MIRROR_NODE_URL:-https://testnet.mirrornode.hedera.com}
+    volumes:
+      - backend-data:/data
+    ports:
+      - "4000:4000"
+    depends_on:
+      migrations:
+        condition: service_completed_successfully
+
+  migrations:
+    build:
+      context: ../backend
+      target: builder
+    command: ["npx", "prisma", "migrate", "deploy"]
+    environment:
+      DATABASE_URL: file:/app/prisma/dev.db
+    volumes:
+      - backend-data:/app/prisma
+
+  frontend:
+    build:
+      context: ../frontend
+    container_name: afriasset-frontend
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  backend-data:
